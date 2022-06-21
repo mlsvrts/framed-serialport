@@ -1,0 +1,55 @@
+[package]
+name = "framed-serial"
+version = "0.1.0"
+authors = ["mlsvrts <mlsvrts@protonmail.com>"]
+edition = "2021"
+readme = "README.adoc"
+license = "MIT"
+keywords = ["serial", "async", "tokio", "usb-cdc-acm", "usb-serial"]
+categories = ["asynchronous"]
+description = "A wrapper for framed, asynchronous, serial communication."
+
+[features]
+slcan = ["dep:bytes"]
+util = ["dep:serialport"]
+
+[dependencies.bytes]
+version = "1.1"
+optional = true
+
+[dependencies.futures]
+version = "0.3"
+
+[dependencies.serialport]
+git = "https://github.com/mlsvrts/serialport-rs/"
+branch = "support-reporting-usb-interface"
+optional = true
+
+[dependencies.thiserror]
+version = "1.0"
+
+[dependencies.tokio]
+version = "1"
+features = ["io-util", "rt"]
+
+[dependencies.tokio-util]
+version = "0.7"
+features = ["codec"]
+
+[dependencies.tokio-serial]
+version = "5.4"
+
+[dependencies.tokio-stream]
+version = ">=0.1.9"
+features = ["sync"]
+
+[dependencies.tracing]
+version = "0.1"
+
+[dev-dependencies.tokio]
+version = "1"
+features = ["macros", "rt-multi-thread"]
+
+[[example]]
+name = "slcan"
+required-features = ["slcan"]

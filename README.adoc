@@ -1,0 +1,35 @@
+= Framed Serial Port
+
+This is a small extension to `tokio_serial` that wraps async serialports in a `tokio_util::codec::Framed`,
+and sets up some read/write tasks to handle message passing.
+
+The `Framed` concept of a device codec is exposed, so that different rules can be applied for managing the
+processed data. An example codec that implements `slcan` is provided, and gated on the `slcan` feature.
+
+== Usage
+
+In general, this crate expects devices that support a 'call and response' method for device commands, while
+simulatanously supporting 'unrequested' data. When a device has been created:
+
+```rust
+let dev = FramedSerial::try_from_port(name, 115200, SlCanCodec).await.unwrap();
+```
+
+Messages that are sent to the device will produce a `oneshot` receiver that will eventually resolve into the
+response data. If the receiver is dropped, the response data will also be dropped.
+
+```rust
+println!("Result: {:?}", dev.send("t123411223344").await?.await?);
+```
+
+Any message that fails to resolve into the 'data' type will be assumed to be a response to a previous message.
+Data that does not fail this `TryFrom` test, will be brodcast to all listeners.
+
+```rust
+let mut rx = dev.subscribe::<SlCanFrame>();
+    task::spawn(async move {
+        while let Some(msg) = rx.next().await {
+            println!("Data: {:?}", msg);
+        }
+    });
+```
