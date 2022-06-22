@@ -17,7 +17,7 @@ pub enum SlCanMessage {
 
 /// A newtype wrapper for SLCAN data frames
 #[derive(Clone, Debug)]
-pub struct SlCanFrame(String);
+pub struct SlCanFrame(pub String);
 
 impl SlCanFrame {
     pub fn as_bytes(&self) -> &[u8] {

@@ -1,6 +1,6 @@
 [package]
 name = "framed-serial"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["mlsvrts <mlsvrts@protonmail.com>"]
 edition = "2021"
 readme = "README.adoc"
