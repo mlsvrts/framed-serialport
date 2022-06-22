@@ -243,7 +243,7 @@ where
     pub async fn send<T>(&self, message: T) -> Result<oneshot::Receiver<R>, Error>
     where
         T: TryInto<F>,
-        <T as TryInto<F>>::Error: fmt::Debug + std::error::Error + 'static,
+        <T as TryInto<F>>::Error: fmt::Debug + std::error::Error + Send + Sync + 'static,
     {
         // Attempts to convert the message into the correct type
         let message = message
@@ -307,7 +307,7 @@ pub enum Error {
     SendError,
 
     #[error("failed to convert the message into the expected type")]
-    ConversionError(#[from] Box<dyn std::error::Error>),
+    ConversionError(#[from] Box<dyn std::error::Error + Send + Sync>),
 }
 
 /// Provides a sample codec for SLCAN messages

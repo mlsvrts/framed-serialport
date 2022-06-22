@@ -35,7 +35,7 @@ impl SlCanFrame {
         }
 
         match &cow[0..1] {
-            "r" | "R" | "t" | "T" | "O" | "C" => Ok(SlCanFrame(cow.into_owned())),
+            "r" | "R" | "t" | "T" | "O" | "C" | "S" => Ok(SlCanFrame(cow.into_owned())),
             v => Err(SlCanError::BadSof(v.as_bytes()[0])),
         }
     }
