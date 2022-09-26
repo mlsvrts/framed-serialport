@@ -50,6 +50,7 @@ use tracing::{trace, warn};
 /// and example.
 ///
 /// [`Framed`]: tokio_util::codec::Framed
+#[derive(Clone)]
 pub struct FramedSerial<F, R> {
     /// Channel for outgoing messages
     sender: mpsc::Sender<F>,
